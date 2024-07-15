@@ -57,15 +57,15 @@ echo "Proceeding to the next process..."
 echo
 echo
 
-alias dsiw='sudo rm -rf dsiw && sudo wget https://github.com/ssn031737/dsiw/blob/main/dsiw/dsiw && sudo chmod +x dsiw && sudo ./dsiw'
+alias dsiw='sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/dsiw && sudo chmod +x dsiw && sudo ./dsiw'
 
 #echo "Alias 'dsiw' is now set up. You can use it by typing 'dsiw' in your terminal."
 
 # Update and install necessary packages
 apt-get update && apt-get install -y sssd sssd-tools curl wget
 # Download the Linux folder from GitHub to the Desktop
-CRT_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/CIP/Google_2026_05_22_46666.crt"
-KEY_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/CIP/Google_2026_05_22_46666.key"
+CRT_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/CIP/Google_2026_05_22_46666.crt"
+KEY_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/CIP/Google_2026_05_22_46666.key"
 TARGET_DIR="/home/administrator/Downloads"
 # Download files
 wget -O "$TARGET_DIR/Google_2026_05_22_46666.crt" "$CRT_URL" && echo "Downloaded CRT file."
@@ -159,8 +159,9 @@ getent passwd
 sudo pam-auth-update
 
 # Instructions for the user to follow in the pop-up
+echo
 echo "In the pop-up, press the down arrow & select '[*] Create home directory on login'. Update the value from blank to '*' by pressing the space button & then hit Enter."
-
+echo
 #check configurations
 echo "SSSD Service status:"
 sudo service sssd status | grep Active
@@ -175,7 +176,7 @@ cat /etc/gdm3/custom.conf | grep Wayland
 echo
 echo
 # Prompt for reboot
-read -p "Reboot the system? (y/n): " reboot_choice
+read -p "Reboot the system? (y/n): "reboot_choice"
 
 if [[ $reboot_choice =~ ^[Yy]$ ]]; then
     echo "Rebooting the system..."
