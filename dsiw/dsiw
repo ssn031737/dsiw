@@ -69,7 +69,7 @@ KEY_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/CIP/Google_2026_05_22_
 TARGET_DIR="/home/administrator/Downloads"
 # Download files
 wget -O "$TARGET_DIR/Google_2026_05_22_46666.crt" "$CRT_URL" && echo "Downloaded CRT file."
-wget -O "$TARGET_DIR/Google_2026_05_22_46666.key" "$FILE_URL" "$KEY_URL" && echo "Downloaded CRT file."
+wget -O "$TARGET_DIR/Google_2026_05_22_46666.key" "$KEY_URL" && echo "Downloaded Key file."
 # Copy the required files and set permissions
 cp -rp $TARGET_DIR/Google_2026_05_22_46666* /var/ && chmod 777 /var/Google_2026_05_22_46666*
 # Configure sssd.conf
@@ -162,15 +162,15 @@ sudo pam-auth-update
 echo "In the pop-up, press the down arrow & select '[*] Create home directory on login'. Update the value from blank to '*' by pressing the space button & then hit Enter."
 
 #check configurations
-echo "SSSD Service status:
-sudo service sssd status | grep Active:
+echo "SSSD Service status:"
+sudo service sssd status | grep Active
 echo
 echo
 echo "SSSD config file output for verification:
 cat /etc/sssd/sssd.conf
 echo
 echo
-echo "GDM Wayland Enable verification:
+echo "GDM Wayland Enable verification:"
 cat /etc/gdm3/custom.conf | grep Wayland
 echo
 echo
