@@ -177,7 +177,6 @@ echo
 echo
 # Prompt for reboot
 read -p "Reboot the system? (y/n): "reboot_choice"
-
 if [[ $reboot_choice =~ ^[Yy]$ ]]; then
     echo "Rebooting the system..."
     sudo reboot
