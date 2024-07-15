@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#Run "su - administrator" and "sudo -i" command before running this script.
 # Ensure the script is run as root
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
@@ -47,61 +47,61 @@ else
 fi
 
 # Check if Google Chrome is installed
-if dpkg -l | grep -q google-chrome-stable; then
-    echo "Google Chrome is already installed."
-    read -p "Do you want to reinstall Google Chrome? (y/n): " reinstall_chrome
-    if [[ $reinstall_chrome =~ ^[Yy]$ ]]; then
-        sudo apt-get remove -y google-chrome-stable
-        install_chrome
-        echo "Google Chrome reinstalled."
-    else
-        echo "Google Chrome installation skipped."
-    fi
-else
-    install_chrome
-    echo "Google Chrome installed."
-fi
+#if dpkg -l | grep -q google-chrome-stable; then
+#    echo "Google Chrome is already installed."
+#    read -p "Do you want to reinstall Google Chrome? (y/n): " reinstall_chrome
+#    if [[ $reinstall_chrome =~ ^[Yy]$ ]]; then
+#        sudo apt-get remove -y google-chrome-stable
+#        install_chrome
+#        echo "Google Chrome reinstalled."
+#    else
+#        echo "Google Chrome installation skipped."
+#    fi
+#else
+#    install_chrome
+#    echo "Google Chrome installed."
+#fi
 
 # Check if AnyDesk is installed
-if dpkg -l | grep -q anydesk; then
-    echo "AnyDesk is already installed."
-    read -p "Do you want to reinstall AnyDesk? (y/n): " reinstall_anydesk
-    if [[ $reinstall_anydesk =~ ^[Yy]$ ]]; then
-        sudo apt-get remove -y anydesk
-        install_anydesk
-        echo "AnyDesk reinstalled."
-    else
-        echo "AnyDesk installation skipped."
-    fi
-else
-    install_anydesk
-    echo "AnyDesk installed."
-fi
+#if dpkg -l | grep -q anydesk; then
+#    echo "AnyDesk is already installed."
+#    read -p "Do you want to reinstall AnyDesk? (y/n): " reinstall_anydesk
+#    if [[ $reinstall_anydesk =~ ^[Yy]$ ]]; then
+#        sudo apt-get remove -y anydesk
+#        install_anydesk
+#        echo "AnyDesk reinstalled."
+#    else
+#        echo "AnyDesk installation skipped."
+#    fi
+#else
+#    install_anydesk
+#    echo "AnyDesk installed."
+#fi
 
 # Check if WPS Office is installed
-if dpkg -l | grep -q wps-office; then
-    echo "WPS Office is already installed."
-    read -p "Do you want to reinstall WPS Office? (y/n): " reinstall_wps
-    if [[ $reinstall_wps =~ ^[Yy]$ ]]; then
-        sudo apt-get remove -y wps-office
-        install_wps
-        echo "WPS Office reinstalled."
-    else
-        echo "WPS Office installation skipped."
-    fi
-else
-    install_wps
-    echo "WPS Office installed."
-fi
+#if dpkg -l | grep -q wps-office; then
+#    echo "WPS Office is already installed."
+#    read -p "Do you want to reinstall WPS Office? (y/n): " reinstall_wps
+#    if [[ $reinstall_wps =~ ^[Yy]$ ]]; then
+#        sudo apt-get remove -y wps-office
+#        install_wps
+#        echo "WPS Office reinstalled."
+#    else
+#        echo "WPS Office installation skipped."
+#    fi
+#else
+#    install_wps
+#    echo "WPS Office installed."
+#fi
 
-echo "Script execution completed."
+#echo "Script execution completed."
 
 #Manage Engine setup
 # Define variables
 TARGET_DIR="/home/administrator/Downloads"
-DMRootCA_URL="https://github.com/ssn031737/Ub-cip/blob/5901bfe81bbf1c6eae3180dfef69f96abadb4f6d/ME/DMRootCA.crt"
-json_URL="https://github.com/ssn031737/Ub-cip/blob/5901bfe81bbf1c6eae3180dfef69f96abadb4f6d/ME/serverinfo.json"
-UEMS_URL="https://github.com/ssn031737/Ub-cip/blob/5901bfe81bbf1c6eae3180dfef69f96abadb4f6d/ME/UEMS_LinuxAgent.bin"
+DMRootCA_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/ME/DMRootCA.crt"
+json_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/ME/serverinfo.json"
+UEMS_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/ME/UEMS_LinuxAgent.bin"
 
 # Function to download and set up ME
 download_and_setup_ME() {
@@ -110,8 +110,9 @@ download_and_setup_ME() {
     wget -O "$TARGET_DIR/serverinfo.json" "$json_URL"
     wget -O "$TARGET_DIR/UEMS_LinuxAgent.bin" "$UEMS_URL"
 
+	
     echo "Setting execution permissions..."
-    sudo chmod +x "$TARGET_DIR/UEMS_LinuxAgent.bin"
+    sudo chmod +x "/home/administrator/Downloads/UEMS_LinuxAgent.bin"
 
     echo "Running the installer..."
 	cd $TARGET_DIR
@@ -195,14 +196,14 @@ exit 0
 
 
 # Determine the shell configuration file
-if [ -n "$BASH_VERSION" ]; then
-    SHELL_RC_FILE="$HOME/.bashrc"
-elif [ -n "$ZSH_VERSION" ]; then
-    SHELL_RC_FILE="$HOME/.zshrc"
-else
-    echo "Unsupported shell. Please add the alias manually."
-    exit 1
-fi
+#if [ -n "$BASH_VERSION" ]; then
+#    SHELL_RC_FILE="$HOME/.bashrc"
+#elif [ -n "$ZSH_VERSION" ]; then
+#    SHELL_RC_FILE="$HOME/.zshrc"
+#else
+#    echo "Unsupported shell. Please add the alias manually."
+#    exit 1
+#fi
 
 # Alias command to be added
 #ALIAS_COMMAND="alias cipsetup='rm -rf linux_cip_new-copy.sh && wget -O linux_cip_new-copy.sh #https://github.com/ssn031737/Ub-cip/linux_cip_new-copy.sh && chmod +x linux_cip_new-copy.sh && ./linux_cip_new-copy.sh'"
@@ -226,8 +227,8 @@ apt-get update && apt-get install -y sssd sssd-tools curl wget
 # Download the Linux folder from GitHub to the Desktop
 #cd /home/administrator/Desktop
 
-CRT_URL="https://github.com/ssn031737/Ub-cip/blob/main/Google_2026_05_22_46666.crt?raw=true"
-KEY_URL="https://github.com/ssn031737/Ub-cip/blob/main/Google_2026_05_22_46666.key?raw=true"
+CRT_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/CIP/Google_2026_05_22_46666.crt"
+KEY_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/CIP/Google_2026_05_22_46666.key"
 TARGET_DIR="/home/administrator/Downloads"
 # Download files
 wget -O "$TARGET_DIR/Google_2026_05_22_46666.crt" "$CRT_URL" && echo "Downloaded CRT file."
