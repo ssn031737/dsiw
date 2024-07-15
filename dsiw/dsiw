@@ -10,8 +10,8 @@ fi
 # Check and change hostname
 current_hostname=$(hostname)
 echo "Current hostname: $current_hostname"
+echo
 read -p "Do you want to change the hostname? (y/n): " change_hostname
-
 if [[ $change_hostname =~ ^[Yy]$ ]]; then
     read -p "Enter new hostname: " new_hostname
     sudo hostnamectl set-hostname $new_hostname
