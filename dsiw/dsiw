@@ -22,9 +22,9 @@ fi
 #Manage Engine setup
 # Define variables
 TARGET_DIR="/home/administrator/Downloads"
-DMRootCA_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/ME/DMRootCA.crt"
-json_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/ME/serverinfo.json"
-UEMS_URL="https://github.com/ssn031737/dsiw/blob/main/dsiw/ME/UEMS_LinuxAgent.bin"
+DMRootCA_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/DMRootCA.crt"
+json_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/serverinfo.json"
+UEMS_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/UEMS_LinuxAgent.bin"
 
 # Function to download and set up ME
 download_and_setup_ME() {
