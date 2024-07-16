@@ -61,6 +61,21 @@ alias dsiw='sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn0
 
 #echo "Alias 'dsiw' is now set up. You can use it by typing 'dsiw' in your terminal."
 
+#function to ask if continue with CIP or exit
+continue_or_stop() {
+    while true; do
+        read -p "Do you want to continue for CIP Installatio (y/n)? " yn
+        case $yn in
+            [Yy]* ) break;;  # If yes, break the loop and continue
+            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
+            * ) echo "Please answer yes or no.";;  # Invalid input, ask again
+        esac
+    done
+}
+#Ask user if to continue with CIP or not.
+continue_or_stop
+
+
 # Update and install necessary packages
 apt-get update && apt-get install -y sssd sssd-tools curl wget
 # Download the Linux folder from GitHub to the Desktop
@@ -175,12 +190,3 @@ echo "GDM Wayland Enable verification:"
 cat /etc/gdm3/custom.conf | grep Wayland
 echo
 echo
-# Prompt for reboot
-read -p "Reboot the system? (y/n): " reboot_choice
-if [[ $reboot_choice =~ ^[Yy]$ ]]; then
-    echo "Rebooting the system..."
-    sudo reboot
-else
-    echo "Exiting script without reboot."
-    exit 0
-fi
