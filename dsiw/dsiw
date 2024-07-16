@@ -186,7 +186,5 @@ echo "SSSD config file output for verification:
 sudo cat /etc/sssd/sssd.conf
 echo
 echo
-echo "GDM Wayland Enable verification:"
+echo "GDM Wayland Enable verification: "
 sudo cat /etc/gdm3/custom.conf | grep Wayland
-echo
-
