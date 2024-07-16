@@ -64,7 +64,7 @@ alias dsiw='sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn0
 #function to ask if continue with CIP or exit
 continue_or_stop() {
     while true; do
-        read -p "Do you want to continue for CIP Installatio (y/n)? " yn
+        read -p "Do you want to continue for CIP Installation (y/n)? " yn
         case $yn in
             [Yy]* ) break;;  # If yes, break the loop and continue
             [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
@@ -177,14 +177,42 @@ sudo pam-auth-update
 echo
 echo "In the pop-up, press the down arrow & select '[*] Create home directory on login'. Update the value from blank to '*' by pressing the space button & then hit Enter."
 echo
+#function to ask if continue with verification or exit
+verification_continue_or_stop() {
+    while true; do
+        read -p "Do you want to continue for basic Verification (y/n)? " yn
+        case $yn in
+            [Yy]* ) break;;  # If yes, break the loop and continue
+            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
+            * ) echo "Please answer yes or no.";;  # Invalid input, ask again
+        esac
+    done
+}
+#Ask user if want to check SSSD service, config and GDM congig.
+verification_continue_or_stop
+
 #check configurations
 echo "SSSD Service status:"
 sudo service sssd status | grep Active
 echo
-echo
-echo "SSSD config file output for verification:
+echo "SSSD config file output for verification: "
 sudo cat /etc/sssd/sssd.conf
-echo
 echo
 echo "GDM Wayland Enable verification: "
 sudo cat /etc/gdm3/custom.conf | grep Wayland
+
+#function to ask if exit the script
+verification_continue_or_stop() {
+    while true; do
+        read -p "Press y to exit, n if any query (y/n)? " yn
+        case $yn in
+            [Yy]* ) echo "Stopping the script."; exit;;  # If no, exit the script
+            [Nn]* ) break;; echo " call 9558820790 in case of any query"  # If yes, break the loop and continue
+            * ) echo "Please answer yes or no.";;  # Invalid input, ask again
+        esac
+    done
+}
+#Ask user if want to check SSSD service, config and GDM congig.
+verification_continue_or_stop
+
+
