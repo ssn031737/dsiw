@@ -207,7 +207,7 @@ exit_continue_or_stop() {
         read -p "Press y to exit, n to reboot (y/n)? " yn
         case $yn in
             [Yy]* ) echo "Stopping the script."; exit;;  # If yes, exit the script
-            [Nn]* ) echo "Rebooting the system"; sudo Reboot;;   # If no, break the loop and continue
+            
             * ) echo "Please answer yes or no.";;  # Invalid input, ask again
         esac
     done
