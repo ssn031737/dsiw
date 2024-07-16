@@ -183,7 +183,7 @@ verification_continue_or_stop() {
         read -p "Do you want to continue for basic Verification (y/n)? " yn
         case $yn in
             [Yy]* ) break;;  # If yes, break the loop and continue
-            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
+#            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
             * ) echo "Please answer yes or no.";;  # Invalid input, ask again
         esac
     done
@@ -204,7 +204,7 @@ sudo cat /etc/gdm3/custom.conf | grep Wayland
 #function to ask if exit the script
 exit_continue_or_stop() {
     while true; do
-        read -p "Press y to exit, n if any query (y/n)? " yn
+        read -p "Press y to exit, n to reboot (y/n)? " yn
         case $yn in
             [Yy]* ) echo "Stopping the script."; exit;;  # If yes, exit the script
             [Nn]* ) echo "Rebooting the system"; sudo Reboot;;   # If no, break the loop and continue
