@@ -183,10 +183,19 @@ sudo service sssd status | grep Active
 echo
 echo
 echo "SSSD config file output for verification:
-cat /etc/sssd/sssd.conf
+sudo cat /etc/sssd/sssd.conf
 echo
 echo
 echo "GDM Wayland Enable verification:"
-cat /etc/gdm3/custom.conf | grep Wayland
+sudo cat /etc/gdm3/custom.conf | grep Wayland
 echo
-echo
+# Prompt for reboot
+read -p "Reboot the system? (y/n): " reboot_choice
+if [[ $reboot_choice =~ ^[Yy]$ ]]; then
+    echo "Rebooting the system..."
+    sudo reboot
+else
+    echo "Exiting script without reboot."
+    exit 0
+fi
+
