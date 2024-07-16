@@ -207,7 +207,7 @@ verification_continue_or_stop() {
         read -p "Press y to exit, n if any query (y/n)? " yn
         case $yn in
             [Yy]* ) echo "Stopping the script."; exit;;  # If no, exit the script
-            [Nn]* ) break;; echo " call 9558820790 in case of any query"  # If yes, break the loop and continue
+            [Nn]* ) break; echo "Call 9558820790 in case of any query";;  # If yes, break the loop and continue
             * ) echo "Please answer yes or no.";;  # Invalid input, ask again
         esac
     done
