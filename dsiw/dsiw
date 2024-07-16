@@ -67,7 +67,7 @@ continue_or_stop() {
         read -p "Do you want to continue for CIP Installation (y/n)? " yn
         case $yn in
             [Yy]* ) break;;  # If yes, break the loop and continue
-            [Nn]* ) echo "Continue to next section of  the script.";;  # If no, exit the script
+            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
             * ) echo "Please answer yes or no.";;  # Invalid input, ask again
         esac
     done
