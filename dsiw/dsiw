@@ -202,17 +202,17 @@ echo "GDM Wayland Enable verification: "
 sudo cat /etc/gdm3/custom.conf | grep Wayland
 
 #function to ask if exit the script
-verification_continue_or_stop() {
+exit_continue_or_stop() {
     while true; do
         read -p "Press y to exit, n if any query (y/n)? " yn
         case $yn in
-            [Yy]* ) echo "Stopping the script."; exit;;  # If no, exit the script
-            [Nn]* ) break; echo "Call 9558820790 in case of any query";;  # If yes, break the loop and continue
+            [Yy]* ) echo "Stopping the script."; exit;;  # If yes, exit the script
+            [Nn]* ) echo "Rebooting the system"; sudo Reboot;;   # If no, break the loop and continue
             * ) echo "Please answer yes or no.";;  # Invalid input, ask again
         esac
     done
 }
 #Ask user if want to check SSSD service, config and GDM congig.
-verification_continue_or_stop
+exit_continue_or_stop
 
 
