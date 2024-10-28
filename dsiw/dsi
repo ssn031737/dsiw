@@ -1,0 +1,683 @@
+#!/bin/bash
+#Run "su - administrator" and "sudo -i" commands before running this script.
+# Ensure the script is run as root
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+
+# Function to display the menu
+show_menu() {
+    echo "============================================================"
+    echo "        DSIW- Dynamic Software Installation (West)"
+    echo "============================================================"
+    echo "Please choose an option:"
+    echo "1) Fresh system setup"
+    echo "2) ME Installation"
+    echo "3) Antivirus"
+    echo "4) WPS Office"
+    echo "5) Google Chrome"
+    echo "6) Document Printer (HP MFP)"
+    echo "7) CIP Setup"
+    echo "8) Barcode Printer"
+    echo "9) Anydesk"
+    echo "10) WiFi Access (Gnome Tools)"
+    echo "11) Display System Information"
+    echo "12) Update & Upgrade System"
+    echo "13) Troubleshooting Update & Upgrade"
+    echo "14) Exit"
+}
+
+# Function to handle the user's choice
+handle_choice() {
+    read -p "Enter your choice: " choice
+    case $choice in
+        1)
+            newsys_setup
+            ;;
+        2)
+            ME_Installation
+            ;;
+        3)
+            echo "A) Check Antivirus Installation"
+            echo "B) Install Seqrite Antivirus"
+            echo "C) Update Seqrite Antivirus"
+            read -p "Select option A, B, or C: " av_choice
+            case $av_choice in
+                A|a) check_antivirus ;;
+                B|b) install_seqrite ;;
+                C|c) update_seqrite ;;
+                *) echo "Invalid choice for Antivirus."; ;;
+            esac
+            ;;
+        4)
+            echo "A) Install WPS Office"
+            echo "B) Remove WPS Office"
+            echo "C) Reinstall WPS Office"
+            read -p "Select option A, B, or C: " wps_choice
+            case $wps_choice in
+                A|a) WPS_Install ;;
+                B|b) WPS_Uninstall ;;
+                C|c) WPS_Reinstall ;;
+                *) echo "Invalid choice for WPS Office."; ;;
+            esac
+            ;;
+        5)
+            echo "A) Install Google Chrome"
+            echo "B) Uninstall Google Chrome"
+            echo "C) Update Google Chrome"
+            echo "D) Reinstall Google Chrome"
+            read -p "Select option A, B, C, or D: " chrome_choice
+            case $chrome_choice in
+                A|a) Chrome_Install ;;
+                B|b) Chrome_Uninstall ;;
+                C|c) Chrome_upgrade ;;
+                D|d) Chrome_Reinstall ;;
+                *) echo "Invalid choice for Google Chrome."; ;;
+            esac
+            ;;
+        6)
+            MFP_Install
+            ;;
+        7)
+            CIP_Install
+            ;;
+        8)
+            BP_Install
+            ;;
+        9)
+            echo "A) Install Anydesk"
+            echo "B) Remove Anydesk"
+            echo "C) Reinstall Anydesk"
+            read -p "Select option A, B, or C: " anydesk_choice
+            case $anydesk_choice in
+                A|a) Anydesk_Install ;;
+                B|b) Anydesk_Remove ;;
+                C|c) Anydesk_Reinstall ;;
+                *) echo "Invalid choice for Anydesk."; ;;
+            esac
+            ;;
+        10)
+            Gnome-tools_Install
+            ;;
+        11)
+            display_system_info
+            ;;
+        12)
+            update-Upgrade
+            ;;
+        13)
+            Update-Upgrade_troubleshooting
+            ;;
+        14)
+            echo "Exiting script..."
+            exit 0
+            ;;
+        *)
+            echo "Invalid choice. Please try again."
+            ;;
+    esac
+}
+
+# Main loop to keep showing the menu until the user chooses to exit
+while true; do
+    show_menu
+    handle_choice
+done
+
+#Run ME installation first in background
+ME_Installation
+
+#For better output clarity during script execution, redirecting the output of some commands to log files:
+echo "Starting ME Installation..." | tee -a /var/log/dsiw_script.log
+
+mkdir /home/administrator/Downloads/dsiw
+$TARGET_DIR="/home/administrator/Downloads/dsiw"
+chmod 777 $TARGET_DIR
+
+    echo "============================================================"
+    echo "         DSIW- Dynamic Software Installation (West)         “
+    echo "============================================================”
+
+alias dsiw='mkdir /home/administrator/Downloads/dsiw && chmod 777 /home/administrator/Downloads/dsiw && cd /home/administrator/Downloads/dsiw && sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/dsiw && sudo chmod +x dsiw && sudo ./dsiw'
+
+echo "alias dsiw='mkdir -p /home/administrator/Downloads/dsiw && chmod 777 /home/administrator/Downloads/dsiw && cd /home/administrator/Downloads/dsiw && sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/dsiw && sudo chmod +x dsiw && sudo ./dsiw'" >> ~/.bashrc
+source ~/.bashrc
+
+#Add alias command for script to run or fix periods (weekly on Saturday afternoon), to check ME & Antivirus
+#Pending schedule
+
+1. Hostname (Display existing hostname and ask for setting up new hostname (y/n) 
+
+Hostname() {
+# Check and change hostname
+current_hostname=$(hostname)
+echo "Current hostname: $current_hostname"
+read -p "Do you want to change the hostname? (y/n): " change_hostname
+
+if [[ $change_hostname =~ ^[Yy]$ ]]; then
+    read -p "Enter new hostname: " new_hostname
+    sudo hostnamectl set-hostname $new_hostname
+    echo "Hostname changed to: $new_hostname"
+else
+    echo "Hostname not changed."
+fi
+}
+
+Hostname
+
+
+1.	Fresh system setup menu (admin account, ME, CIP, Document Printer, Google-chrome)
+newsys_setup () {
+ME_Installation
+WPS_Install
+Anydesk_Install
+Gnome-tools_Install
+Chrome_Install
+MFP_Install
+CIP_Install
+BP_Install
+Display_system_info
+}
+To update & upgrade the systems, Press Y, else N 
+verification_updatenupgrade_or_stop() {
+    while true; do
+        read -p "To update & upgrade the system, Press Y to continue, N to exit (y/n)? " yn
+        case $yn in
+            [Yy]* ) break;;  # If yes, break the loop and continue
+#            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
+            * ) echo "Please answer yes or no.";;  # Invalid input, ask again
+        esac
+    done
+}
+
+
+
+2.	ME installation
+
+ME_Installation () {
+
+download_and_setup_ME() {
+DMRootCA_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/DMRootCA.crt"
+json_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/serverinfo.json"
+UEMS_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/UEMS_LinuxAgent.bin"
+
+    echo "Downloading required files..."
+    wget -O "$TARGET_DIR/DMRootCA.crt" "$DMRootCA_URL"
+    wget -O "$TARGET_DIR/serverinfo.json" "$json_URL"
+    wget -O "$TARGET_DIR/UEMS_LinuxAgent.bin" "$UEMS_URL"
+
+    echo "Setting execution permissions..."
+    sudo chmod +x "$TARGET_DIR/UEMS_LinuxAgent.bin"
+
+    echo "Running the installer..."
+	cd $TARGET_DIR
+    sudo ./UEMS_LinuxAgent.bin
+
+# Check the status of the dcservice
+if systemctl status dcservice | grep -q "active"; then
+    echo "dcservice is active. ME is already installed and active."
+	echo
+else
+    echo "dcservice is not active. Installing ME..."
+	echo
+download_and_setup_ME
+fi
+
+}
+
+ME_Installation
+
+
+3.	Antivirus
+A.	Check if antivirus installed (Name & Version)
+B.	Install seqrite antivirus software
+C.	Update seqrite antivirus software (if already installed)
+4.	WPS office
+
+
+A.	Install WPS office
+
+WPS_Install () {
+echo "Updating system packages..."
+sudo apt update -y
+
+# Download the latest WPS Office .deb package from the official website
+echo "Downloading WPS Office 11.1.0.11723..."
+WPS_URL="https://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/11723/wps-office_11.1.0.11723.XA_amd64.deb"
+
+wget -O "$TARGET_DIR/wps-office.deb" "$WPS_URL"
+
+# Install WPS Office using the downloaded .deb file
+echo "Installing WPS Office..."
+sudo apt install ./wps-office.deb -y
+
+# Clean up the downloaded .deb file
+echo "Cleaning up..."
+rm wps-office.deb
+
+# Confirm installation
+echo "WPS Office installation completed!"
+}
+
+WPS_Install
+
+
+B.	Remove WPS Office
+WPS_Uninstall () {
+sudo apt remove wps-office
+sudo apt autoremove
+}
+
+WPS_Uninstall
+
+
+C.	Re-install WPS Office (Remove & Install again)
+WPS_Reinstall () {
+WPS_Uninstall
+WPS_Install
+}
+
+WPS_Reinstall
+
+
+5.	Chrome remove/update/ Reinstallation menu
+A.	Install the google-chrome
+B.	Uninstall google-chrome
+C.	Update the existing google-chrome
+D.	Reinstall google-chrome
+
+# Function to get the latest version of Chrome from Google's website
+get_latest_version() {
+  wget -qO- https://dl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages | grep "Version: " | head -n 1 | cut -d ' ' -f 2
+}
+
+# Function to get the installed version of Chrome
+get_installed_version() {
+  dpkg -s google-chrome-stable | grep '^Version:' | awk '{print $2}'
+}
+
+# Get the latest and installed versions
+latest_version=$(get_latest_version)
+installed_version=$(get_installed_version)
+
+# Compare versions
+if [ "$installed_version" == "$latest_version" ]; then
+  echo "Google Chrome is already up to date. (Version: $installed_version)"
+else
+  echo "Updating Google Chrome from version $installed_version to $latest_version..."
+
+
+A.	Install the google-chrome
+Chrome_Install () {
+ Chrome_URL= “https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb”
+
+wget -O "$TARGET_DIR/google-chrome-stable_current_amd64.deb" "$Chrome_URL"
+# Install the new version of Google Chrome
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+
+  # Fix any dependency issues
+  sudo apt-get install -f -y
+
+  # Clean up
+  rm $TARGET_DIR/google-chrome-stable_current_amd64.deb
+
+  echo "Google Chrome has been updated to version $latest_version."
+}
+
+Chrome_Install
+
+B. Remove existing Google Chrome installation
+
+Chrome_Uninstall () {  
+sudo apt-get purge google-chrome-stable -y
+sudo apt-get autoremove -y
+}
+
+Chrome_Uninstall
+
+
+B.	Update the existing google-chrome
+
+Chrome_upgrade () {
+  sudo apt upgrade google-chrome-stable
+}
+
+Chrome_upgrade
+
+7. Document Printer (HP MFP)
+A.	Install Document printer
+
+MFP_Install () {
+sudo apt-get install hplip hplip-gui hp-plugins
+hp-plugins
+}
+
+MFP_Install
+
+
+B.	Remove Document Printer
+
+MFP_Uninstall () {
+sudo apt-get purge --remove hplip
+sudo apt-get autoremove
+}
+
+MFP_Uninstall
+
+8. CIP Setup
+A.	Prerequisites softwares for CIP
+
+CIP_Presoftwares_checklist () {
+Hostname
+ME_Install
+}
+
+CIP_Presoftwares_checklist
+
+
+B.	Run CIP Setup
+
+CIP_Install () {
+# Update and install necessary packages
+apt-get update && apt-get install -y sssd sssd-tools curl wget
+# Download the Linux folder from GitHub to the Desktop
+CRT_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/CIP/Google_2026_05_22_46666.crt"
+KEY_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/CIP/Google_2026_05_22_46666.key"
+TARGET_DIR="/home/administrator/Downloads"
+# Download files
+wget -O "$TARGET_DIR/Google_2026_05_22_46666.crt" "$CRT_URL" && echo "Downloaded CRT file."
+wget -O "$TARGET_DIR/Google_2026_05_22_46666.key" "$KEY_URL" && echo "Downloaded Key file."
+# Copy the required files and set permissions
+cp -rp $TARGET_DIR/Google_2026_05_22_46666* /var/ && chmod 777 /var/Google_2026_05_22_46666*
+# Configure sssd.conf
+#Variable for SSSD file path
+SSSD_CONF_FILE="/etc/sssd/sssd.conf"
+#cat /home/administrator/Desktop/Linux/sssd_conf.txt > /etc/sssd/sssd.conf
+# Define the sssd configuration content
+SSSD_CONFIG="[sssd]
+services = nss, pam
+domains = delhivery.com
+
+[domain/delhivery.com]
+ignore_group_members = true
+sudo_provider = none
+cache_credentials = true
+ldap_tls_cert = /var/Google_2026_05_22_46666.crt
+ldap_tls_key = /var/Google_2026_05_22_46666.key
+ldap_uri = ldaps://ldap.google.com:636
+ldap_search_base = dc=delhivery,dc=com
+id_provider = ldap
+auth_provider = ldap
+ldap_schema = rfc2307bis
+ldap_user_uuid = entryUUID
+ldap_groups_use_matching_rule_in_chain = true
+ldap_initgroups_use_matching_rule_in_chain = true
+enumerate = false
+ldap_tls_cipher_suite = NORMAL:!VERS-TLS1.3"
+
+# Write the new configuration to sssd.conf
+echo "$SSSD_CONFIG" | sudo tee "$SSSD_CONF_FILE" > /dev/null
+
+chown root:root /etc/sssd/sssd.conf
+chmod 600 /etc/sssd/sssd.conf
+
+# Restart sssd service
+service sssd restart
+
+# Configure custom.conf
+#cat /home/administrator/Desktop/Linux/custom_conf.txt > /etc/gdm3/custom.conf
+
+#Variable for SSSD file path
+GDM_CONF_FILE="/etc/gdm3/custom.conf"
+
+# Define the GDM configuration content:
+GDM_CONFIG="#GDM configuration storage
+#
+# See /usr/share/gdm/gdm.schemas for a list of available options.
+
+# Uncomment the line below to force the login screen to use Xorg
+WaylandEnable=true
+
+# Enabling automatic login
+#  AutomaticLoginEnable = true
+#  AutomaticLogin = user1
+
+# Enabling timed login
+#  TimedLoginEnable = true
+#  TimedLogin = user1
+#  TimedLoginDelay = 10
+
+#[security]
+
+#[xdmcp]
+
+#[chooser]
+
+#[debug]
+# Uncomment the line below to turn on debugging
+# More verbose logs
+# Additionally lets the X server dump core if it crashes
+#Enable=true"
+
+# Write the new configuration to GDM config file
+echo "$GDM_CONFIG" | sudo tee "$GDM_CONF_FILE" > /dev/null
+
+# Add Google Cloud endpoint verification repository
+echo "deb https://packages.cloud.google.com/apt endpoint-verification main" | sudo tee -a /etc/apt/sources.list.d/endpoint-verification.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+# Update and install endpoint verification package
+apt-get update && apt-get install -y endpoint-verification
+
+# Display users
+getent passwd
+
+# Enable home directory creation
+sudo pam-auth-update
+
+# Instructions for the user to follow in the pop-up
+echo
+echo "In the pop-up, press the down arrow & select '[*] Create home directory on login'. Update the value from blank to '*' by pressing the space button & then hit Enter."
+echo
+#function to ask if continue with verification or exit
+verification_continue_or_stop() {
+    while true; do
+        read -p "Do you want to continue for basic Verification (y/n)? " yn
+        case $yn in
+            [Yy]* ) break;;  # If yes, break the loop and continue
+#            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
+            * ) echo "Please answer yes or no.";;  # Invalid input, ask again
+        esac
+    done
+}
+#Ask the user if they want to check SSSD service, config and GDM congig.
+verification_continue_or_stop
+
+#check configurations
+echo "SSSD Service status:"
+sudo service sssd status | grep Active
+echo
+echo "SSSD config file output for verification: "
+sudo cat /etc/sssd/sssd.conf
+echo
+echo "GDM Wayland Enable verification: "
+sudo cat /etc/gdm3/custom.conf | grep Wayland
+
+}
+
+CIP_Install
+
+
+C.	Post-CIP softwares
+CIP_Postsetups () {
+WPS_Install
+Chrome_upgrade
+
+}
+CIP_Postsetups
+
+#function to ask if exit the script
+exit_continue_or_stop() {
+    while true; do
+        read -p "Press y to exit, n to reboot (y/n)? " yn
+        case $yn in
+            [Yy]* ) echo "Stopping the script."; exit;;  # If yes, exit the script
+            [Nn]* ) echo "Rebooting the system"; sudo reboot;;   # If no, break the loop and continue
+            * ) echo "Please answer yes or no.";;  # Invalid input, ask again
+        esac
+    done
+}
+exit_continue_or_stop
+
+#Ask the user if they want to check SSSD service, config and GDM congig.
+exit_continue_or_stop
+
+9. Barcode printer
+A.	Install TSC printer driver
+BP_Install () {
+    echo "Download the printer driver to admin user downloads/dsiw folder: https://usca.tscprinters.com/en/downloads"
+
+    # Confirm if the setup is downloaded in /home/administrator/Downloads/dsiw folder
+    read -p "Is the setup downloaded in /home/administrator/Downloads/dsiw? (Y/N): " response
+
+    # Check the response
+    if [[ "$response" == "Y" || "$response" == "y" ]]; then
+        # Proceed with the installation if the user confirms
+        echo "Proceeding with installation..."
+
+        # Permissions to the install-driver file and run commands.
+        cd "$(TARGET_DIR)"
+        sudo chmod 777 install-driver
+        sudo ./install-driver
+        echo "Now go to the barcode printer settings"
+        echo "Set the size as you required (example: 4.00 to 2.50)"
+    else
+        echo "Installation halted. Please download the setup and try again."
+    fi
+}
+
+BP_Install
+
+
+B.	Re-install TSC printer driver
+echo “pending”
+
+
+C.	Install PPD
+echo “pending”
+
+10. Anydesk setup
+A.	Install Anydesk
+Anydesk_Install () {
+wget -qO - https://keys.anydesk.com/repos/DEB-GPG-KEY | sudo apt-key add -
+echo "deb http://deb.anydesk.com/ all main" | sudo tee /etc/apt/sources.list.d/anydesk.list
+sudo apt update
+sudo apt install anydesk
+}
+
+Anydesk_Install
+
+
+B.	Remove anydesk
+Anydesk_Remove () {
+sudo apt-get purge anydesk
+sudo apt-get autoclean
+sudo apt-get autoremove
+sudo apt update
+sudo apt list --upgradable
+sudo apt upgrade -y
+}
+
+Anydesk_Remove
+
+
+C.	Remove and re-install Anydesk
+Anydesk_Reinstall() {
+sudo apt-get purge anydesk
+sudo apt-get autoclean
+sudo apt-get autoremove
+sudo apt update
+wget -qO - https://keys.anydesk.com/repos/DEB-GPG-KEY | sudo apt-key add - echo "deb http://deb.anydesk.com/ all main" | sudo tee /etc/apt/sources.list.d/anydesk.list
+sudo apt update
+sudo apt install anydesk
+sudo apt upgrade
+}
+
+Anydesk_Reinstall
+
+11. WiFi access to user (Permission)
+Echo “Installing Gnome Tools”
+Gnome-tools_Install () {
+sudo apt-get update && upgrade
+sudo apt-get install -y gnome-system-tools
+}
+
+Gnome-tools_Install
+
+10. Display System Information (Make, Model, Serial No., RAM, Processor, OS name and version, Network Information, ME, CIP (SSSD service), Antivirus)
+
+display_system_info() {
+    echo "==================================="
+    echo "\033[0;32m          SYSTEM INFORMATION       \033[0m"
+    echo "==================================="
+
+    echo "Make and Model: \033[0;32m $(sudo dmidecode -s system-manufacturer) $(sudo dmidecode -s system-product-name) \033[0m"
+    echo "Serial Number: \033[0;32m $(sudo dmidecode -s system-serial-number) \033[0m"
+    echo "Operating System: \033[0;32m  $(lsb_release -d | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
+    echo "Kernel Version: \033[0;32m $(uname -r) \033[0m"
+    echo
+    echo "Hostname: \033[0;32m $(hostname) \033[0m"
+    echo
+    echo "Kaspersky should not be installed in any system. If services are active, remove the Kaspersky antivirus immediately."
+    echo "Kaspersky klagent64 status: \033[0;32m $(service klagent64 status) \033[0m"
+    echo "Kaspersky klagent64 systemd status: \033[0;32m  $(systemctl status klagent) \033[0m"
+    echo
+    echo "Total RAM: \033[0;32m $(free -h | awk '/Mem:/ {print $2}') \033[0m "
+    echo
+    echo "Processor: \033[0;32m $(lscpu | grep 'Model name' | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
+    echo "==================================="
+    echo "\033[0;32m        NETWORK INFORMATION        \033[0m"
+    echo "==================================="
+    ip -o -4 addr show | awk '{print $2 " - " $4}'
+    echo "==================================="
+    echo "\033[0;32m          SERVICE STATUS           \033[0m"
+    echo "==================================="
+    echo "DC Service Status: \033[0;32m $(sudo systemctl is-active dc) \033[0m"
+    echo "SSSD Service Status: \033[0;32m $(sudo systemctl is-active sssd) \033[0m
+}
+
+# Call the function
+display_system_info
+
+11. Update and upgrade Ubuntu
+update-Upgrade () {
+sudo apt-get update && sudo apt-get upgrade
+}
+Update-Upgrade
+
+
+A.	Troubleshooting
+
+Update-Upgrade_troubleshooting () {
+sudo apt purge update-manager update-manager-core && sudo apt install update-manager
+sudo apt clean
+sudo apt autoclean
+apt --fix-broken install
+}
+Update-Upgrade_troubleshooting
+
+#!/bin/bash
+
+# Prompt the user for input
+read -p "Are you facing any issue related to repository? (Y/N): " response
+
+# Check the response
+if [[ "$response" == "Y" || "$response" == "y" ]]; then
+    echo "Running troubleshooting commands..."
+    # Call your troubleshooting function or commands here
+    Update-Upgrade_troubleshooting
+else
+    echo "Exiting..."
+    exit 0
+fi
