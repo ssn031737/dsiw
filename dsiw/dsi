@@ -80,12 +80,12 @@ handle_choice() {
             MFP_Install
             ;;
         7)
-            CIP_Install
-			CIP_Disable-Delhivery-account
-			echo "A) Run CIP setup"
-            echo "B) Disable Delhivery Account"
-            read -p "Select option A, B: " chrome_choice
-            case $chrome_choice in
+            	CIP_Install
+		CIP_Disable-Delhivery-account
+		echo "A) Run CIP setup"
+            	echo "B) Disable Delhivery Account"
+            	read -p "Select option A, B: " chrome_choice
+            	case $chrome_choice in
                 A|a) CIP_Install ;;
                 B|b) CIP_Disable-Delhivery-account ;;
                 *) echo "Invalid choice for Google Chrome."; ;;
