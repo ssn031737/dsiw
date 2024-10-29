@@ -81,7 +81,16 @@ handle_choice() {
             ;;
         7)
             CIP_Install
-            ;;
+			CIP_Disable-Delhivery-account
+			echo "A) Run CIP setup"
+            echo "B) Disable Delhivery Account"
+            read -p "Select option A, B: " chrome_choice
+            case $chrome_choice in
+                A|a) CIP_Install ;;
+                B|b) CIP_Disable-Delhivery-account ;;
+                *) echo "Invalid choice for Google Chrome."; ;;
+            esac
+			;;
         8)
             BP_Install
             ;;
@@ -281,20 +290,22 @@ WPS_Install
 WPS_Reinstall
 
 
-5.	Chrome remove/update/ Reinstallation menu
-A.	Install the google-chrome
-B.	Uninstall google-chrome
-C.	Update the existing google-chrome
-D.	Reinstall google-chrome
+#5.	Chrome remove/update/ Reinstallation menu
+#A.	Install the google-chrome
+#B.	Uninstall google-chrome
+#C.	Update the existing google-chrome
+#D.	Reinstall google-chrome
 
 # Function to get the latest version of Chrome from Google's website
+Compare_Installed_Version() {
+
 get_latest_version() {
   wget -qO- https://dl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages | grep "Version: " | head -n 1 | cut -d ' ' -f 2
 }
 
 # Function to get the installed version of Chrome
 get_installed_version() {
-  dpkg -s google-chrome-stable | grep '^Version:' | awk '{print $2}'
+ dpkg -s google-chrome-stable | grep '^Version:' | awk '{print $2}'
 }
 
 # Get the latest and installed versions
@@ -306,11 +317,11 @@ if [ "$installed_version" == "$latest_version" ]; then
   echo "Google Chrome is already up to date. (Version: $installed_version)"
 else
   echo "Updating Google Chrome from version $installed_version to $latest_version..."
+}
 
-
-A.	Install the google-chrome
+#A. Install the google-chrome
 Chrome_Install () {
- Chrome_URL= “https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb”
+Chrome_URL=“https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb”
 
 wget -O "$TARGET_DIR/google-chrome-stable_current_amd64.deb" "$Chrome_URL"
 # Install the new version of Google Chrome
@@ -327,7 +338,7 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 Chrome_Install
 
-B. Remove existing Google Chrome installation
+#B. Remove existing Google Chrome installation
 
 Chrome_Uninstall () {  
 sudo apt-get purge google-chrome-stable -y
@@ -337,7 +348,7 @@ sudo apt-get autoremove -y
 Chrome_Uninstall
 
 
-B.	Update the existing google-chrome
+#C.	Update the existing google-chrome
 
 Chrome_upgrade () {
   sudo apt upgrade google-chrome-stable
@@ -345,8 +356,8 @@ Chrome_upgrade () {
 
 Chrome_upgrade
 
-7. Document Printer (HP MFP)
-A.	Install Document printer
+#7. Document Printer (HP MFP)
+#A.	Install Document printer
 
 MFP_Install () {
 sudo apt-get install hplip hplip-gui hp-plugins
@@ -356,7 +367,7 @@ hp-plugins
 MFP_Install
 
 
-B.	Remove Document Printer
+#B.	Remove Document Printer
 
 MFP_Uninstall () {
 sudo apt-get purge --remove hplip
@@ -365,22 +376,22 @@ sudo apt-get autoremove
 
 MFP_Uninstall
 
-8. CIP Setup
-A.	Prerequisites softwares for CIP
+#8. CIP Setup
+#A.	Prerequisites softwares for CIP
 
 CIP_Presoftwares_checklist () {
 Hostname
 ME_Install
 }
 
-CIP_Presoftwares_checklist
-
-
-B.	Run CIP Setup
+#B.	Run CIP Setup
 
 CIP_Install () {
 # Update and install necessary packages
 apt-get update && apt-get install -y sssd sssd-tools curl wget
+
+CIP_Presoftwares_checklist
+
 # Download the Linux folder from GitHub to the Desktop
 CRT_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/CIP/Google_2026_05_22_46666.crt"
 KEY_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/CIP/Google_2026_05_22_46666.key"
@@ -504,18 +515,55 @@ echo
 echo "GDM Wayland Enable verification: "
 sudo cat /etc/gdm3/custom.conf | grep Wayland
 
+CIP_Postsetups
+
 }
 
 CIP_Install
 
 
-C.	Post-CIP softwares
+#C.	Post-CIP softwares
 CIP_Postsetups () {
 WPS_Install
 Chrome_upgrade
 
 }
 CIP_Postsetups
+
+#D. Disable Delhivery account
+
+CIP_Disable-Delhivery-account() {
+# Check if SSSD service is active
+if systemctl is-active --quiet sssd; then
+    echo "The SSSD service is active."
+
+    # Ask user to confirm disabling the account
+    read -p "Do you want to disable the Delhivery account for login? (Y/N): " choice
+
+    # Convert input to lowercase for consistency
+    choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]')
+
+    if [[ "$choice" == "y" ]]; then
+        # Check if Delhivery or delhivery account exists and disable it
+        if id -u "Delhivery" >/dev/null 2>&1; then
+            sudo usermod -L Delhivery
+            echo "Delhivery account has been disabled."
+        elif id -u "delhivery" >/dev/null 2>&1; then
+            sudo usermod -L delhivery
+            echo "delhivery account has been disabled."
+        else
+            echo "No Delhivery or delhivery account found."
+        fi
+    else
+        echo "No changes made."
+    fi
+else
+    echo "SSSD service is not active. No action needed."
+fi
+}
+CIP_Disable-Delhivery-account
+
+
 
 #function to ask if exit the script
 exit_continue_or_stop() {
@@ -533,8 +581,8 @@ exit_continue_or_stop
 #Ask the user if they want to check SSSD service, config and GDM congig.
 exit_continue_or_stop
 
-9. Barcode printer
-A.	Install TSC printer driver
+#9. Barcode printer
+#A.	Install TSC printer driver
 BP_Install () {
     echo "Download the printer driver to admin user downloads/dsiw folder: https://usca.tscprinters.com/en/downloads"
 
@@ -560,15 +608,15 @@ BP_Install () {
 BP_Install
 
 
-B.	Re-install TSC printer driver
+#B.	Re-install TSC printer driver
 echo “pending”
 
 
-C.	Install PPD
+#C.	Install PPD
 echo “pending”
 
-10. Anydesk setup
-A.	Install Anydesk
+#10. Anydesk setup
+#A.	Install Anydesk
 Anydesk_Install () {
 wget -qO - https://keys.anydesk.com/repos/DEB-GPG-KEY | sudo apt-key add -
 echo "deb http://deb.anydesk.com/ all main" | sudo tee /etc/apt/sources.list.d/anydesk.list
@@ -579,7 +627,7 @@ sudo apt install anydesk
 Anydesk_Install
 
 
-B.	Remove anydesk
+#B.	Remove anydesk
 Anydesk_Remove () {
 sudo apt-get purge anydesk
 sudo apt-get autoclean
@@ -592,7 +640,7 @@ sudo apt upgrade -y
 Anydesk_Remove
 
 
-C.	Remove and re-install Anydesk
+#C.	Remove and re-install Anydesk
 Anydesk_Reinstall() {
 sudo apt-get purge anydesk
 sudo apt-get autoclean
@@ -615,7 +663,7 @@ sudo apt-get install -y gnome-system-tools
 
 Gnome-tools_Install
 
-10. Display System Information (Make, Model, Serial No., RAM, Processor, OS name and version, Network Information, ME, CIP (SSSD service), Antivirus)
+#10. Display System Information (Make, Model, Serial No., RAM, Processor, OS name and version, Network Information, ME, CIP (SSSD service), Antivirus)
 
 display_system_info() {
     echo "==================================="
@@ -650,14 +698,14 @@ display_system_info() {
 # Call the function
 display_system_info
 
-11. Update and upgrade Ubuntu
+#11. Update and upgrade Ubuntu
 update-Upgrade () {
 sudo apt-get update && sudo apt-get upgrade
 }
 Update-Upgrade
 
 
-A.	Troubleshooting
+#A.Troubleshooting
 
 Update-Upgrade_troubleshooting () {
 sudo apt purge update-manager update-manager-core && sudo apt install update-manager
@@ -666,8 +714,6 @@ sudo apt autoclean
 apt --fix-broken install
 }
 Update-Upgrade_troubleshooting
-
-#!/bin/bash
 
 # Prompt the user for input
 read -p "Are you facing any issue related to repository? (Y/N): " response
