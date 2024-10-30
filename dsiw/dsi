@@ -563,30 +563,28 @@ display_system_info () {
 
 #11. Update and upgrade Ubuntu
 update-upgrade () {
-sudo apt-get update && sudo apt-get upgrade
+    sudo apt-get update && sudo apt-get upgrade
 
-# Prompt the user for input
-read -p "Are you facing any issue related to repository? (Y/N):" response
+    # Prompt the user for input
+    read -p "Are you facing any issue related to repository? (Y/N): " response
 
-# Check the response
-if [[ "$response" == "Y" || "$response" == "y" ]]; then
-    echo "Running troubleshooting commands..."
-    # Call your troubleshooting function or commands here
-    Update-Upgrade_troubleshooting
-else
-    echo "Exiting..."
-    exit 0
-fi
+    # Check the response
+    if [[ "$response" == "Y" || "$response" == "y" ]]; then
+        echo "Running troubleshooting commands..."
+        # Call your troubleshooting function or commands here
+        Update-Upgrade_troubleshooting
+    else
+        echo "Exiting..."
+        exit 0
+    fi
 }
 
-
-#A.Troubleshooting
-
+# A. Troubleshooting
 Update-Upgrade_troubleshooting () {
-sudo apt purge update-manager update-manager-core && sudo apt install update-manager
-sudo apt clean
-sudo apt autoclean
-apt --fix-broken install
+    sudo apt purge update-manager update-manager-core && sudo apt install update-manager
+    sudo apt clean
+    sudo apt autoclean
+    sudo apt --fix-broken install
 }
 
 ######################################################################
