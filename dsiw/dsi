@@ -169,7 +169,7 @@ WPS_Install
 #D.	Reinstall google-chrome
 
 # Function to get the latest version of Chrome from Google's website
-Compare_Installed_Version() {
+
 
 get_latest_version() {
   wget -qO- https://dl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages | grep "Version: " | head -n 1 | cut -d ' ' -f 2
@@ -185,6 +185,7 @@ latest_version=$(get_latest_version)
 installed_version=$(get_installed_version)
 
 # Compare versions
+Compare_Installed_Version() {
 if [ "$installed_version" == "$latest_version" ]; then
   echo "Google Chrome is already up to date. (Version: $installed_version)"
 else
