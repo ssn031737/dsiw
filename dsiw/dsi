@@ -678,7 +678,7 @@ handle_choice() {
         7)
             	echo "A) Run CIP setup"
             	echo "B) Disable Delhivery Account"
-		Echo “C) CIP Post Installation Setup"
+		echo “C) CIP Post Installation Setup"
             	read -p "Select option A, B, C: " chrome_choice
             	case $chrome_choice in
                 A|a) CIP_Install ;;
