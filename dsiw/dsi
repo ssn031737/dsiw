@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #Run "su - administrator" and "sudo -i" commands before running this script.
 # Ensure the script is run as root
