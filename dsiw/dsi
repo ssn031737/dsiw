@@ -1,3 +1,4 @@
+
 #!/bin/bash
 #Run "su - administrator" and "sudo -i" commands before running this script.
 # Ensure the script is run as root
@@ -6,157 +7,22 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Function to display the menu
-show_menu() {
-    echo "============================================================"
-    echo "        DSIW- Dynamic Software Installation (West)"
-    echo "============================================================"
-    echo "Please choose an option:"
-    echo "1) Fresh system setup"
-    echo "2) ME Installation"
-    echo "3) Antivirus"
-    echo "4) WPS Office"
-    echo "5) Google Chrome"
-    echo "6) Document Printer (HP MFP)"
-    echo "7) CIP Setup"
-    echo "8) Barcode Printer"
-    echo "9) Anydesk"
-    echo "10) WiFi Access (Gnome Tools)"
-    echo "11) Display System Information"
-    echo "12) Update & Upgrade System"
-    echo "13) Troubleshooting Update & Upgrade"
-    echo "14) Exit"
-}
-
-# Function to handle the user's choice
-handle_choice() {
-    read -p "Enter your choice: " choice
-    case $choice in
-        1)
-            newsys_setup
-            ;;
-        2)
-            ME_Installation
-            ;;
-        3)
-            echo "A) Check Antivirus Installation"
-            echo "B) Install Seqrite Antivirus"
-            echo "C) Update Seqrite Antivirus"
-            read -p "Select option A, B, or C: " av_choice
-            case $av_choice in
-                A|a) check_antivirus ;;
-                B|b) install_seqrite ;;
-                C|c) update_seqrite ;;
-                *) echo "Invalid choice for Antivirus."; ;;
-            esac
-            ;;
-        4)
-            echo "A) Install WPS Office"
-            echo "B) Remove WPS Office"
-            echo "C) Reinstall WPS Office"
-            read -p "Select option A, B, or C: " wps_choice
-            case $wps_choice in
-                A|a) WPS_Install ;;
-                B|b) WPS_Uninstall ;;
-                C|c) WPS_Reinstall ;;
-                *) echo "Invalid choice for WPS Office."; ;;
-            esac
-            ;;
-        5)
-            echo "A) Install Google Chrome"
-            echo "B) Uninstall Google Chrome"
-            echo "C) Update Google Chrome"
-            echo "D) Reinstall Google Chrome"
-            read -p "Select option A, B, C, or D: " chrome_choice
-            case $chrome_choice in
-                A|a) Chrome_Install ;;
-                B|b) Chrome_Uninstall ;;
-                C|c) Chrome_upgrade ;;
-                D|d) Chrome_Reinstall ;;
-                *) echo "Invalid choice for Google Chrome."; ;;
-            esac
-            ;;
-        6)
-            MFP_Install
-            ;;
-        7)
-            	CIP_Install
-		CIP_Disable-Delhivery-account
-		echo "A) Run CIP setup"
-            	echo "B) Disable Delhivery Account"
-            	read -p "Select option A, B: " chrome_choice
-            	case $chrome_choice in
-                A|a) CIP_Install ;;
-                B|b) CIP_Disable-Delhivery-account ;;
-                *) echo "Invalid choice for Google Chrome."; ;;
-            esac
-			;;
-        8)
-            BP_Install
-            ;;
-        9)
-            echo "A) Install Anydesk"
-            echo "B) Remove Anydesk"
-            echo "C) Reinstall Anydesk"
-            read -p "Select option A, B, or C: " anydesk_choice
-            case $anydesk_choice in
-                A|a) Anydesk_Install ;;
-                B|b) Anydesk_Remove ;;
-                C|c) Anydesk_Reinstall ;;
-                *) echo "Invalid choice for Anydesk."; ;;
-            esac
-            ;;
-        10)
-            Gnome-tools_Install
-            ;;
-        11)
-            display_system_info
-            ;;
-        12)
-            update-Upgrade
-            ;;
-        13)
-            Update-Upgrade_troubleshooting
-            ;;
-        14)
-            echo "Exiting script..."
-            exit 0
-            ;;
-        *)
-            echo "Invalid choice. Please try again."
-            ;;
-    esac
-}
-
-# Main loop to keep showing the menu until the user chooses to exit
-while true; do
-    show_menu
-    handle_choice
-done
-
-#Run ME installation first in background
-ME_Installation
-
-#For better output clarity during script execution, redirecting the output of some commands to log files:
-echo "Starting ME Installation..." | tee -a /var/log/dsiw_script.log
-
-mkdir /home/administrator/Downloads/dsiw
-$TARGET_DIR="/home/administrator/Downloads/dsiw"
-chmod 777 $TARGET_DIR
 
     echo "============================================================"
-    echo "         DSIW- Dynamic Software Installation (West)         “
+    echo "                           DSIW- Dynamic Software Installation (West)                             "
     echo "============================================================”
 
-alias dsiw='mkdir /home/administrator/Downloads/dsiw && chmod 777 /home/administrator/Downloads/dsiw && cd /home/administrator/Downloads/dsiw && sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/dsiw && sudo chmod +x dsiw && sudo ./dsiw'
+alias dsiw='mkdir -p /home/administrator/Downloads/dsiw && chmod 777 /home/administrator/Downloads/dsiw && cd /home/administrator/Downloads/dsiw && sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/dsiw && sudo chmod +x dsiw && sudo ./dsiw'
 
+#Add alias as command
 echo "alias dsiw='mkdir -p /home/administrator/Downloads/dsiw && chmod 777 /home/administrator/Downloads/dsiw && cd /home/administrator/Downloads/dsiw && sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/dsiw && sudo chmod +x dsiw && sudo ./dsiw'" >> ~/.bashrc
 source ~/.bashrc
 
 #Add alias command for script to run or fix periods (weekly on Saturday afternoon), to check ME & Antivirus
 #Pending schedule
 
-1. Hostname (Display existing hostname and ask for setting up new hostname (y/n) 
+
+#1. Hostname (Display existing hostname and ask for setting up new hostname (y/n) 
 
 Hostname() {
 # Check and change hostname
@@ -173,10 +39,10 @@ else
 fi
 }
 
-Hostname
 
 
-1.	Fresh system setup menu (admin account, ME, CIP, Document Printer, Google-chrome)
+
+# 1. Fresh system setup menu (admin account, ME, CIP, Document Printer, Google-chrome)
 newsys_setup () {
 ME_Installation
 WPS_Install
@@ -187,14 +53,14 @@ MFP_Install
 CIP_Install
 BP_Install
 Display_system_info
-}
+
 To update & upgrade the systems, Press Y, else N 
 verification_updatenupgrade_or_stop() {
     while true; do
         read -p "To update & upgrade the system, Press Y to continue, N to exit (y/n)? " yn
         case $yn in
             [Yy]* ) break;;  # If yes, break the loop and continue
-#            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
+            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
             * ) echo "Please answer yes or no.";;  # Invalid input, ask again
         esac
     done
@@ -202,9 +68,13 @@ verification_updatenupgrade_or_stop() {
 
 
 
-2.	ME installation
+
+# 2.ME installation
 
 ME_Installation () {
+
+#For better output clarity during script execution, redirecting the output of some commands to log files:
+echo "Starting ME Installation..." | tee -a /var/log/dsiw_script.log
 
 download_and_setup_ME() {
 DMRootCA_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/DMRootCA.crt"
@@ -235,17 +105,19 @@ fi
 
 }
 
-ME_Installation
 
 
-3.	Antivirus
-A.	Check if antivirus installed (Name & Version)
-B.	Install seqrite antivirus software
-C.	Update seqrite antivirus software (if already installed)
-4.	WPS office
+
+#3.	Antivirus
+#A.	Check if antivirus installed (Name & Version)
+#B.	Install seqrite antivirus software
+#C.	Update seqrite antivirus software (if already installed)
 
 
-A.	Install WPS office
+
+
+#4.	WPS office
+#A.	Install WPS office
 
 WPS_Install () {
 echo "Updating system packages..."
@@ -269,25 +141,24 @@ rm wps-office.deb
 echo "WPS Office installation completed!"
 }
 
-WPS_Install
 
 
-B.	Remove WPS Office
+
+#B.	Remove WPS Office
 WPS_Uninstall () {
 sudo apt remove wps-office
 sudo apt autoremove
 }
 
-WPS_Uninstall
 
 
-C.	Re-install WPS Office (Remove & Install again)
+
+#C.	Re-install WPS Office (Remove & Install again)
 WPS_Reinstall () {
 WPS_Uninstall
 WPS_Install
 }
 
-WPS_Reinstall
 
 
 #5.	Chrome remove/update/ Reinstallation menu
@@ -336,7 +207,7 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
   echo "Google Chrome has been updated to version $latest_version."
 }
 
-Chrome_Install
+
 
 #B. Remove existing Google Chrome installation
 
@@ -345,7 +216,7 @@ sudo apt-get purge google-chrome-stable -y
 sudo apt-get autoremove -y
 }
 
-Chrome_Uninstall
+
 
 
 #C.	Update the existing google-chrome
@@ -354,7 +225,9 @@ Chrome_upgrade () {
   sudo apt upgrade google-chrome-stable
 }
 
-Chrome_upgrade
+
+
+
 
 #7. Document Printer (HP MFP)
 #A.	Install Document printer
@@ -364,7 +237,7 @@ sudo apt-get install hplip hplip-gui hp-plugins
 hp-plugins
 }
 
-MFP_Install
+
 
 
 #B.	Remove Document Printer
@@ -374,7 +247,8 @@ sudo apt-get purge --remove hplip
 sudo apt-get autoremove
 }
 
-MFP_Uninstall
+
+
 
 #8. CIP Setup
 #A.	Prerequisites softwares for CIP
@@ -384,7 +258,13 @@ Hostname
 ME_Install
 }
 
-#B.	Run CIP Setup
+#B.	Post-CIP softwares
+CIP_Postsetups () {
+WPS_Install
+Chrome_upgrade
+}
+
+#C.	Run CIP Setup
 
 CIP_Install () {
 # Update and install necessary packages
@@ -497,12 +377,12 @@ verification_continue_or_stop() {
         read -p "Do you want to continue for basic Verification (y/n)? " yn
         case $yn in
             [Yy]* ) break;;  # If yes, break the loop and continue
-#            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
+            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
             * ) echo "Please answer yes or no.";;  # Invalid input, ask again
         esac
     done
 }
-#Ask the user if they want to check SSSD service, config and GDM congig.
+#Ask the user if they want to check SSSD service, config and GDM config.
 verification_continue_or_stop
 
 #check configurations
@@ -519,16 +399,6 @@ CIP_Postsetups
 
 }
 
-CIP_Install
-
-
-#C.	Post-CIP softwares
-CIP_Postsetups () {
-WPS_Install
-Chrome_upgrade
-
-}
-CIP_Postsetups
 
 #D. Disable Delhivery account
 
@@ -578,11 +448,13 @@ exit_continue_or_stop() {
 }
 exit_continue_or_stop
 
-#Ask the user if they want to check SSSD service, config and GDM congig.
+#Ask the user if they want to check SSSD service, config and GDM config.
 exit_continue_or_stop
 
+
+
 #9. Barcode printer
-#A.	Install TSC printer driver
+#A.Install TSC printer driver
 BP_Install () {
     echo "Download the printer driver to admin user downloads/dsiw folder: https://usca.tscprinters.com/en/downloads"
 
@@ -605,15 +477,15 @@ BP_Install () {
     fi
 }
 
-BP_Install
-
 
 #B.	Re-install TSC printer driver
-echo “pending”
+echo “Re-installation script is under development”
 
 
 #C.	Install PPD
-echo “pending”
+echo “Under Development”
+
+
 
 #10. Anydesk setup
 #A.	Install Anydesk
@@ -623,8 +495,6 @@ echo "deb http://deb.anydesk.com/ all main" | sudo tee /etc/apt/sources.list.d/a
 sudo apt update
 sudo apt install anydesk
 }
-
-Anydesk_Install
 
 
 #B.	Remove anydesk
@@ -636,8 +506,6 @@ sudo apt update
 sudo apt list --upgradable
 sudo apt upgrade -y
 }
-
-Anydesk_Remove
 
 
 #C.	Remove and re-install Anydesk
@@ -652,16 +520,12 @@ sudo apt install anydesk
 sudo apt upgrade
 }
 
-Anydesk_Reinstall
-
 11. WiFi access to user (Permission)
 Echo “Installing Gnome Tools”
 Gnome-tools_Install () {
 sudo apt-get update && upgrade
 sudo apt-get install -y gnome-system-tools
 }
-
-Gnome-tools_Install
 
 #10. Display System Information (Make, Model, Serial No., RAM, Processor, OS name and version, Network Information, ME, CIP (SSSD service), Antivirus)
 
@@ -695,14 +559,10 @@ display_system_info() {
     echo "SSSD Service Status: \033[0;32m $(sudo systemctl is-active sssd) \033[0m
 }
 
-# Call the function
-display_system_info
-
 #11. Update and upgrade Ubuntu
-update-Upgrade () {
+update-upgrade () {
 sudo apt-get update && sudo apt-get upgrade
 }
-Update-Upgrade
 
 
 #A.Troubleshooting
@@ -713,7 +573,6 @@ sudo apt clean
 sudo apt autoclean
 apt --fix-broken install
 }
-Update-Upgrade_troubleshooting
 
 # Prompt the user for input
 read -p "Are you facing any issue related to repository? (Y/N): " response
@@ -727,3 +586,144 @@ else
     echo "Exiting..."
     exit 0
 fi
+
+
+
+######################################################################
+
+#Run ME installation first in background
+ME_Installation
+
+#Setup for Target Directory:
+mkdir /home/administrator/Downloads/dsiw
+$TARGET_DIR="/home/administrator/Downloads/dsiw"
+chmod 777 $TARGET_DIR
+
+
+# Function to display the menu
+show_menu() {
+    echo "============================================================"
+    echo "        DSIW- Dynamic Software Installation (West)"
+    echo "============================================================"
+    echo "Please choose an option:"
+    echo "1) Fresh system setup"
+    echo "2) ME Installation"
+    echo "3) Antivirus"
+    echo "4) WPS Office"
+    echo "5) Google Chrome"
+    echo "6) Document Printer (HP MFP)"
+    echo "7) CIP Setup"
+    echo "8) Barcode Printer"
+    echo "9) Anydesk"
+    echo "10) WiFi Access (Gnome Tools)"
+    echo "11) Display System Information"
+    echo "12) Update & Upgrade System"
+    echo "13) Troubleshooting Update & Upgrade"
+    echo "14) Exit"
+}
+
+# Function to handle the user's choice
+handle_choice() {
+    read -p "Enter your choice: " choice
+    case $choice in
+        1)
+            newsys_setup
+            ;;
+        2)
+            ME_Installation
+            ;;
+        3)
+            echo "A) Check Antivirus Installation"
+            echo "B) Install Seqrite Antivirus"
+            echo "C) Update Seqrite Antivirus"
+            read -p "Select option A, B, or C: " av_choice
+            case $av_choice in
+                A|a) check_antivirus ;;
+                B|b) install_seqrite ;;
+                C|c) update_seqrite ;;
+                *) echo "Invalid choice for Antivirus."; ;;
+            esac
+            ;;
+        4)
+            echo "A) Install WPS Office"
+            echo "B) Remove WPS Office"
+            echo "C) Reinstall WPS Office"
+            read -p "Select option A, B, or C: " wps_choice
+            case $wps_choice in
+                A|a) WPS_Install ;;
+                B|b) WPS_Uninstall ;;
+                C|c) WPS_Reinstall ;;
+                *) echo "Invalid choice for WPS Office."; ;;
+            esac
+            ;;
+        5)
+            echo "A) Install Google Chrome"
+            echo "B) Uninstall Google Chrome"
+            echo "C) Update Google Chrome"
+            echo "D) Reinstall Google Chrome"
+            read -p "Select option A, B, C, or D: " chrome_choice
+            case $chrome_choice in
+                A|a) Chrome_Install ;;
+                B|b) Chrome_Uninstall ;;
+                C|c) Chrome_upgrade ;;
+                D|d) Chrome_Reinstall ;;
+                *) echo "Invalid choice for Google Chrome."; ;;
+            esac
+            ;;
+        6)
+            MFP_Install
+            ;;
+        7)
+            	echo "A) Run CIP setup"
+            	echo "B) Disable Delhivery Account"
+		Echo “C) CIP Post Installation Setup”
+            	read -p "Select option A, B, C: " chrome_choice
+            	case $chrome_choice in
+                A|a) CIP_Install ;;
+                B|b) CIP_Disable-Delhivery-account ;;
+	    C|c) 	CIP_Postsetups
+                *) echo "Invalid choice"; ;;
+            esac
+			;;
+        8)
+            BP_Install
+            ;;
+        9)
+            echo "A) Install Anydesk"
+            echo "B) Remove Anydesk"
+            echo "C) Reinstall Anydesk"
+            read -p "Select option A, B, or C: " anydesk_choice
+            case $anydesk_choice in
+                A|a) Anydesk_Install ;;
+                B|b) Anydesk_Remove ;;
+                C|c) Anydesk_Reinstall ;;
+                *) echo "Invalid choice for Anydesk."; ;;
+            esac
+            ;;
+        10)
+            Gnome-tools_Install
+            ;;
+        11)
+            display_system_info
+            ;;
+        12)
+            update-Upgrade
+            ;;
+        13)
+            Update-Upgrade_troubleshooting
+            ;;
+        14)
+            echo "Exiting script..."
+            exit 0
+            ;;
+        *)
+            echo "Invalid choice. Please try again."
+            ;;
+    esac
+}
+
+# Main loop to keep showing the menu until the user chooses to exit
+while true; do
+    show_menu
+    handle_choice
+done
