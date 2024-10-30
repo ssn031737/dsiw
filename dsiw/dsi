@@ -9,7 +9,7 @@ fi
 
     echo "============================================================"
     echo "        DSIW- Dynamic Software Installation (West) ---      "
-    echo "============================================================”
+    echo "============================================================"
 
 
 
@@ -193,7 +193,7 @@ else
 
 #A. Install the google-chrome
 Chrome_Install () {
-Chrome_URL=“https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb”
+Chrome_URL=“https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 wget -O "$TARGET_DIR/google-chrome-stable_current_amd64.deb" "$Chrome_URL"
 # Install the new version of Google Chrome
@@ -480,11 +480,11 @@ BP_Install () {
 
 
 #B.	Re-install TSC printer driver
-echo “Re-installation script is under development”
+echo “Re-installation script is under development"
 
 
 #C.	Install PPD
-echo “Under Development”
+echo “Under Development"
 
 
 
@@ -522,7 +522,7 @@ sudo apt upgrade
 }
 
 11. WiFi access to user (Permission)
-Echo “Installing Gnome Tools”
+Echo “Installing Gnome Tools"
 Gnome-tools_Install () {
 sudo apt-get update && upgrade
 sudo apt-get install -y gnome-system-tools
@@ -677,7 +677,7 @@ handle_choice() {
         7)
             	echo "A) Run CIP setup"
             	echo "B) Disable Delhivery Account"
-		Echo “C) CIP Post Installation Setup”
+		Echo “C) CIP Post Installation Setup"
             	read -p "Select option A, B, C: " chrome_choice
             	case $chrome_choice in
                 A|a) CIP_Install ;;
