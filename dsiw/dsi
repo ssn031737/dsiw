@@ -577,7 +577,7 @@ apt --fix-broken install
 }
 
 # Prompt the user for input
-read -p "Are you facing any issue related to repository? (Y/N): " response
+read -p "Are you facing any issue related to repository? (Y/N):" response
 
 # Check the response
 if [[ "$response" == "Y" || "$response" == "y" ]]; then
