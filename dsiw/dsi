@@ -171,26 +171,26 @@ WPS_Install
 # Function to get the latest version of Chrome from Google's website
 
 
-get_latest_version() {
-  wget -qO- https://dl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages | grep "Version: " | head -n 1 | cut -d ' ' -f 2
-}
+#get_latest_version() {
+#  wget -qO- https://dl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages | grep "Version: " | head -n 1 | cut -d ' ' -f 2
+#}
 
 # Function to get the installed version of Chrome
-get_installed_version() {
- dpkg -s google-chrome-stable | grep '^Version:' | awk '{print $2}'
-}
+#get_installed_version() {
+# dpkg -s google-chrome-stable | grep '^Version:' | awk '{print $2}'
+#}
 
 # Get the latest and installed versions
-latest_version=$(get_latest_version)
-installed_version=$(get_installed_version)
+#latest_version=$(get_latest_version)
+#installed_version=$(get_installed_version)
 
 # Compare versions
-Compare_Installed_Version () {
-if [ "$installed_version" == "$latest_version" ]; then
-  echo "Google Chrome is already up to date. (Version: $installed_version)"
-else
-  echo "Updating Google Chrome from version $installed_version to $latest_version..."
-}
+#Compare_Installed_Version () {
+#if [ "$installed_version" == "$latest_version" ]; then
+#  echo "Google Chrome is already up to date. (Version: $installed_version)"
+#else
+#  echo "Updating Google Chrome from version $installed_version to $latest_version..."
+#}
 
 #A. Install the google-chrome
 Chrome_Install () {
