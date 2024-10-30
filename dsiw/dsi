@@ -185,7 +185,7 @@ latest_version=$(get_latest_version)
 installed_version=$(get_installed_version)
 
 # Compare versions
-Compare_Installed_Version() {
+Compare_Installed_Version () {
 if [ "$installed_version" == "$latest_version" ]; then
   echo "Google Chrome is already up to date. (Version: $installed_version)"
 else
