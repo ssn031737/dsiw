@@ -564,19 +564,6 @@ display_system_info () {
 #11. Update and upgrade Ubuntu
 update-upgrade () {
     sudo apt-get update && sudo apt-get upgrade
-
-    # Prompt the user for input
-    #read "Are you facing any issue related to repository? Y/N): " response
-
-    # Check the response
-    #if [[ "$response" == "Y" || "$response" == "y" ]]; then
-    #    echo "Running troubleshooting commands..."
-	# Call your troubleshooting function or commands here
-        # Update-Upgrade_troubleshooting
-    	#else
-	#   echo "Exiting..."
-        #exit 0
-    #fi
 }
 
 # A. Troubleshooting
@@ -601,120 +588,120 @@ chmod 777 $TARGET_DIR
 # Function to display the menu
 show_menu() {
     echo "============================================================"
-    echo "        DSIW- Dynamic Software Installation (West)"
+    echo "        DSIW- Dynamic Software Installation West"
     echo "============================================================"
     echo "Please choose an option:"
-    echo "1) Fresh system setup"
-    echo "2) ME Installation"
-    echo "3) Antivirus"
-    echo "4) WPS Office"
-    echo "5) Google Chrome"
-    echo "6) Document Printer (HP MFP)"
-    echo "7) CIP Setup"
-    echo "8) Barcode Printer"
-    echo "9) Anydesk"
-    echo "10) WiFi Access (Gnome Tools)"
-    echo "11) Display System Information"
-    echo "12) Update & Upgrade System"
-    echo "13) Troubleshooting Update & Upgrade"
-    echo "14) Exit"
+    echo "1 Fresh system setup"
+    echo "2 ME Installation"
+    echo "3 Antivirus"
+    echo "4 WPS Office"
+    echo "5 Google Chrome"
+    echo "6 Document Printer- HP MFP"
+    echo "7 CIP Setup"
+    echo "8 Barcode Printer"
+    echo "9 Anydesk"
+    echo "10 WiFi Access -Gnome Tools"
+    echo "11 Display System Information"
+    echo "12 Update & Upgrade System"
+    echo "13 Troubleshooting Update & Upgrade"
+    echo "14 Exit"
 }
 
 # Function to handle the user's choice
 handle_choice() {
     read -p "Enter your choice: " choice
     case $choice in
-        1)
+        1
             newsys_setup
             ;;
-        2)
+        2
             ME_Installation
             ;;
-        3)
-            echo "A) Check Antivirus Installation"
-            echo "B) Install Seqrite Antivirus"
-            echo "C) Update Seqrite Antivirus"
+        3
+            echo "A Check Antivirus Installation"
+            echo "B Install Seqrite Antivirus"
+            echo "C Update Seqrite Antivirus"
             read -p "Select option A, B, or C: " av_choice
             case $av_choice in
-                A|a) check_antivirus ;;
-                B|b) install_seqrite ;;
-                C|c) update_seqrite ;;
-                *) echo "Invalid choice for Antivirus."; ;;
+                A|a check_antivirus ;;
+                B|b install_seqrite ;;
+                C|c update_seqrite ;;
+                * echo "Invalid choice for Antivirus."; ;;
             esac
             ;;
-        4)
-            echo "A) Install WPS Office"
-            echo "B) Remove WPS Office"
-            echo "C) Reinstall WPS Office"
+        4
+            echo "A Install WPS Office"
+            echo "B Remove WPS Office"
+            echo "C Reinstall WPS Office"
             read -p "Select option A, B, or C: " wps_choice
             case $wps_choice in
-                A|a) WPS_Install ;;
-                B|b) WPS_Uninstall ;;
-                C|c) WPS_Reinstall ;;
-                *) echo "Invalid choice for WPS Office."; ;;
+                A|a WPS_Install ;;
+                B|b WPS_Uninstall ;;
+                C|c WPS_Reinstall ;;
+                * echo "Invalid choice for WPS Office."; ;;
             esac
             ;;
-        5)
-            echo "A) Install Google Chrome"
-            echo "B) Uninstall Google Chrome"
-            echo "C) Update Google Chrome"
-            echo "D) Reinstall Google Chrome"
+        5
+            echo "A Install Google Chrome"
+            echo "B Uninstall Google Chrome"
+            echo "C Update Google Chrome"
+            echo "D Reinstall Google Chrome"
             read -p "Select option A, B, C, or D: " chrome_choice
             case $chrome_choice in
-                A|a) Chrome_Install ;;
-                B|b) Chrome_Uninstall ;;
-                C|c) Chrome_upgrade ;;
-                D|d) Chrome_Reinstall ;;
-                *) echo "Invalid choice for Google Chrome."; ;;
+                A|a Chrome_Install ;;
+                B|b Chrome_Uninstall ;;
+                C|c Chrome_upgrade ;;
+                D|d Chrome_Reinstall ;;
+                * echo "Invalid choice for Google Chrome."; ;;
             esac
             ;;
-        6)
+        6
             MFP_Install
             ;;
-        7)
-            	echo "A) Run CIP setup"
-            	echo "B) Disable Delhivery Account"
-		echo "C) CIP Post Installation Setup"
+        7
+            	echo "A Run CIP setup"
+            	echo "B Disable Delhivery Account"
+		echo "C CIP Post Installation Setup"
             	read -p "Select option A, B, C: " chrome_choice
             	case $chrome_choice in
-                A|a) CIP_Install ;;
-                B|b) CIP_Disable-Delhivery-account ;;
-	    C|c) 	CIP_Postsetups
-                *) echo "Invalid choice"; ;;
+                A|a CIP_Install ;;
+                B|b CIP_Disable-Delhivery-account ;;
+	    	C|c CIP_Postsetups ;;
+                * echo "Invalid choice"; ;;
             esac
 			;;
-        8)
+        8
             BP_Install
             ;;
-        9)
-            echo "A) Install Anydesk"
-            echo "B) Remove Anydesk"
-            echo "C) Reinstall Anydesk"
+        9
+            echo "A Install Anydesk"
+            echo "B Remove Anydesk"
+            echo "C Reinstall Anydesk"
             read -p "Select option A, B, or C: " anydesk_choice
             case $anydesk_choice in
-                A|a) Anydesk_Install ;;
-                B|b) Anydesk_Remove ;;
-                C|c) Anydesk_Reinstall ;;
-                *) echo "Invalid choice for Anydesk."; ;;
+                A|a Anydesk_Install ;;
+                B|b Anydesk_Remove ;;
+                C|c Anydesk_Reinstall ;;
+                * echo "Invalid choice for Anydesk."; ;;
             esac
             ;;
-        10)
+        10
             Gnome-tools_Install
             ;;
-        11)
+        11
             display_system_info
             ;;
-        12)
+        12
             update-Upgrade
             ;;
-        13)
+        13
             Update-Upgrade_troubleshooting
             ;;
-        14)
+        14
             echo "Exiting script..."
             exit 0
             ;;
-        *)
+        *
             echo "Invalid choice. Please try again."
             ;;
     esac
