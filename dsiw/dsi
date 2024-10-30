@@ -29,7 +29,7 @@ Hostname () {
 # Check and change hostname
 current_hostname=$(hostname)
 echo "Current hostname: $current_hostname"
-read "Do you want to change the hostname? (y/n): " change_hostname
+read -p "Do you want to change the hostname? y/n: " change_hostname
 
 if [[ $change_hostname =~ ^[Yy]$ ]]; then
     read -p "Enter new hostname: " new_hostname
@@ -39,8 +39,6 @@ else
     echo "Hostname not changed."
 fi
 }
-
-
 
 
 # 1. Fresh system setup menu (admin account, ME, CIP, Document Printer, Google-chrome)
@@ -58,11 +56,11 @@ display_system_info
 To update & upgrade the systems, Press Y, else N 
 verification_updatenupgrade_or_stop() {
     while true; do
-        read -p "To update & upgrade the system, Press Y to continue, N to exit (y/n)? " yn
+        read -p "To update & upgrade the system, Press Y to continue, N to exit y/n? " yn
         case $yn in
-            [Yy]* ) break;;  # If yes, break the loop and continue
-            [Nn]* ) echo "Stopping the script."; exit;;  # If no, exit the script
-            * ) echo "Please answer yes or no.";;  # Invalid input, ask again
+            [Yy]*)  break;;  # If yes, break the loop and continue
+            [Nn]*)  echo "Stopping the script."; exit;;  # If no, exit the script
+            *)  echo "Please answer yes or no.";;  # Invalid input, ask again
         esac
     done
 }
@@ -101,9 +99,7 @@ if systemctl status dcservice | grep -q "active"; then
 else
     echo "dcservice is not active. Installing ME..."
 	echo
-download_and_setup_ME
 fi
-
 }
 
 
@@ -194,7 +190,7 @@ WPS_Install
 
 #A. Install the google-chrome
 Chrome_Install () {
-Chrome_URL=“https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+Chrome_URL="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 wget -O "$TARGET_DIR/google-chrome-stable_current_amd64.deb" "$Chrome_URL"
 # Install the new version of Google Chrome
@@ -553,7 +549,7 @@ display_system_info () {
     echo "==================================="
     echo "\033[0;32m        NETWORK INFORMATION        \033[0m"
     echo "==================================="
-    ip -o -4 addr show | awk '{print $2 " - " $4}'
+    echo "IP Address: \033[0;32 $(ip -o -4 addr show | awk '{print $2 " - " $4}') \033[0m"
     echo "==================================="
     echo "\033[0;32m          SERVICE STATUS           \033[0m"
     echo "==================================="
