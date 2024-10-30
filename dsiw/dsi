@@ -522,8 +522,8 @@ sudo apt install anydesk
 sudo apt upgrade
 }
 
-11. WiFi access to user (Permission)
-Echo “Installing Gnome Tools"
+#11. WiFi access to user (Permission)
+echo “Installing Gnome Tools"
 Gnome-tools_Install () {
 sudo apt-get update && upgrade
 sudo apt-get install -y gnome-system-tools
