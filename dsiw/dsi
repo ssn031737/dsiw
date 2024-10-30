@@ -8,8 +8,10 @@ fi
 
 
     echo "============================================================"
-    echo "                           DSIW- Dynamic Software Installation (West)                             "
+    echo "        DSIW- Dynamic Software Installation (West) ---      "
     echo "============================================================”
+
+
 
 alias dsiw='mkdir -p /home/administrator/Downloads/dsiw && chmod 777 /home/administrator/Downloads/dsiw && cd /home/administrator/Downloads/dsiw && sudo rm -rf dsiw && sudo wget https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/dsiw && sudo chmod +x dsiw && sudo ./dsiw'
 
