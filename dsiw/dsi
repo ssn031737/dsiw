@@ -566,17 +566,17 @@ update-upgrade () {
     sudo apt-get update && sudo apt-get upgrade
 
     # Prompt the user for input
-    read "Are you facing any issue related to repository? (Y/N): " response
+    #read "Are you facing any issue related to repository? (Y/N): " response
 
     # Check the response
-    if [[ "$response" == "Y" || "$response" == "y" ]]; then
-        echo "Running troubleshooting commands..."
-        # Call your troubleshooting function or commands here
-        Update-Upgrade_troubleshooting
-    else
-        echo "Exiting..."
-        exit 0
-    fi
+    #if [[ "$response" == "Y" || "$response" == "y" ]]; then
+    #    echo "Running troubleshooting commands..."
+	# Call your troubleshooting function or commands here
+        # Update-Upgrade_troubleshooting
+    	#else
+	#   echo "Exiting..."
+        #exit 0
+    #fi
 }
 
 # A. Troubleshooting
