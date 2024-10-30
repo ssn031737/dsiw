@@ -52,7 +52,7 @@ Chrome_Install
 MFP_Install
 CIP_Install
 BP_Install
-Display_system_info
+display_system_info
 
 To update & upgrade the systems, Press Y, else N 
 verification_updatenupgrade_or_stop() {
@@ -529,7 +529,7 @@ sudo apt-get install -y gnome-system-tools
 
 #10. Display System Information (Make, Model, Serial No., RAM, Processor, OS name and version, Network Information, ME, CIP (SSSD service), Antivirus)
 
-display_system_info() {
+display_system_info () {
     echo "==================================="
     echo "\033[0;32m          SYSTEM INFORMATION       \033[0m"
     echo "==================================="
