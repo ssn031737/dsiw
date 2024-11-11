@@ -1,0 +1,112 @@
+#!/bin/bash
+
+#Run "su - administrator" and "sudo -i" command before running this script.
+
+# Ensure the script is run as root
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+# Check and change hostname
+current_hostname=$(hostname)
+echo "Current hostname: $current_hostname"
+echo
+read -p "Do you want to change the hostname? (y/n): " change_hostname
+if [[ $change_hostname =~ ^[Yy]$ ]]; then
+    read -p "Enter new hostname: " new_hostname
+    sudo hostnamectl set-hostname $new_hostname
+    echo "Hostname changed to: $new_hostname"
+else
+    echo "Hostname not changed."
+fi
+#Manage Engine setup
+# Define variables
+TARGET_DIR="/home/administrator/Downloads/dsiw"
+DMRootCA_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/DMRootCA.crt"
+json_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/serverinfo.json"
+UEMS_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/UEMS_LinuxAgent.bin"
+
+# Function to download and set up ME
+download_and_setup_ME() {
+    echo "Downloading required files..."
+    wget -O "$TARGET_DIR/DMRootCA.crt" "$DMRootCA_URL"
+    wget -O "$TARGET_DIR/serverinfo.json" "$json_URL"
+    wget -O "$TARGET_DIR/UEMS_LinuxAgent.bin" "$UEMS_URL"
+
+	
+    echo "Setting execution permissions..."
+    sudo chmod +x "/home/administrator/Downloads/UEMS_LinuxAgent.bin"
+
+    echo "Running the installer..."
+	cd $TARGET_DIR
+    sudo ./UEMS_LinuxAgent.bin
+}
+
+
+# Check the status of the dcservice
+if systemctl status dcservice | grep -q "active"; then
+	systemctl restart dcservice
+    echo "dcservice is active. ME is already installed."
+	echo
+else
+    echo "dcservice is not active. Installing ME..."
+	echo
+    download_and_setup_ME
+fi
+
+# Proceed to the next process
+echo "Proceeding to the next process..."
+echo
+
+#Change Delhivery account password
+#!/bin/bash
+
+# Script to change the password for the user "Delhivery" or "delhivery" only
+
+# Set the target username and password
+username1="Delhivery"
+username2="delhivery"
+new_password="D3lhiv3ry@321"
+
+# Check if either username exists
+if id "$username1" &>/dev/null; then
+  # Change password for "Delhivery"
+  echo "$username1:$new_password" | chpasswd
+  echo "Password for $username1 has been successfully changed."
+elif id "$username2" &>/dev/null; then
+  # Change password for "delhivery"
+  echo "$username2:$new_password" | chpasswd
+  echo "Password for $username2 has been successfully changed."
+else
+  echo "User Delhivery or delhivery does not exist."
+fi
+
+display_system_info () {
+    echo "==================================="
+    echo "\033[0;32m          SYSTEM INFORMATION       \033[0m"
+    echo "==================================="
+
+    echo "Make and Model: \033[0;32m $(sudo dmidecode -s system-manufacturer) $(sudo dmidecode -s system-product-name) \033[0m"
+    echo "Serial Number: \033[0;32m $(sudo dmidecode -s system-serial-number) \033[0m"
+    echo "Operating System: \033[0;32m  $(lsb_release -d | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
+    echo "Kernel Version: \033[0;32m $(uname -r) \033[0m"
+    echo
+    echo "Hostname: \033[0;32m $(hostname) \033[0m"
+    echo
+    echo "Kaspersky should not be installed in any system. If services are active, remove the Kaspersky antivirus immediately."
+    echo "Kaspersky klagent64 status: \033[0;32m $(service klagent64 status) \033[0m"
+    echo "Kaspersky klagent64 systemd status: \033[0;32m  $(systemctl status klagent) \033[0m"
+    echo
+    echo "Total RAM: \033[0;32m $(free -h | awk '/Mem:/ {print $2}') \033[0m "
+    echo
+    echo "Processor: \033[0;32m $(lscpu | grep 'Model name' | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
+    echo "==================================="
+    echo "\033[0;32m        NETWORK INFORMATION        \033[0m"
+    echo "==================================="
+    echo "IP Address: \033[0;32 $(ip -o -4 addr show | awk '{print $2 " - " $4}') \033[0m"
+    echo "==================================="
+    echo "\033[0;32m          SERVICE STATUS           \033[0m"
+    echo "==================================="
+    echo "DC Service Status: \033[0;32m $(sudo systemctl is-active dc) \033[0m"
+    echo "SSSD Service Status: \033[0;32m $(sudo systemctl is-active sssd) \033[0m
+}
