@@ -89,20 +89,18 @@ display_system_info () {
     echo -e "\033[0;32m          SYSTEM INFORMATION       \033[0m"
     echo "==================================="
 
-    echo -e "Make and Model: \033[0;32m $(sudo dmidecode -s system-manufacturer) $(sudo dmidecode -s system-product-name) \033[0m"
-    echo -e "Serial Number: \033[0;32m $(sudo dmidecode -s system-serial-number) \033[0m"
-    echo -e "Operating System: \033[0;32m  $(lsb_release -d | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
-    echo -e "Kernel Version: \033[0;32m $(uname -r) \033[0m"
-    echo
-    echo -e "Hostname: \033[0;32m $(hostname) \033[0m"
+    echo -e "Make and Model:     \033[0;32m $(sudo dmidecode -s system-manufacturer) $(sudo dmidecode -s system-product-name) \033[0m"
+    echo -e "Serial Number:      \033[0;32m $(sudo dmidecode -s system-serial-number) \033[0m"
+    echo -e "Operating System:   \033[0;32m  $(lsb_release -d | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
+    echo -e "Kernel Version:     \033[0;32m $(uname -r) \033[0m"
+   echo -e "echo -e "Total RAM:  \033[0;32m $(free -h | awk '/Mem:/ {print $2}') \033[0m "
+    echo -e "Processor:          \033[0;32m $(lscpu | grep 'Model name' | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
+    echo -e "Hostname:           \033[0;32m $(hostname) \033[0m"
     echo
     echo "Kaspersky should not be installed in any system. If services are active, remove the Kaspersky antivirus immediately."
     echo -e "Kaspersky klagent64 status: \033[0;32m $(service klagent64 status) \033[0m"
     echo -e "Kaspersky klagent64 systemd status: \033[0;32m  $(systemctl status klagent) \033[0m"
     echo
-    echo -e "Total RAM: \033[0;32m $(free -h | awk '/Mem:/ {print $2}') \033[0m "
-    echo
-    echo -e "Processor: \033[0;32m $(lscpu | grep 'Model name' | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
     echo "==================================="
     echo -e "\033[0;32m        NETWORK INFORMATION        \033[0m"
     echo "==================================="
