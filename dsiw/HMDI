@@ -38,7 +38,7 @@ download_and_setup_ME() {
 
 	
     echo "Setting execution permissions..."
-    sudo chmod +x "/home/administrator/Downloads/UEMS_LinuxAgent.bin"
+    sudo chmod +x "/home/administrator/Downloads/dsiw/UEMS_LinuxAgent.bin"
 
     echo "Running the installer..."
 	cd $TARGET_DIR
