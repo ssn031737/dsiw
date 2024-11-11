@@ -19,6 +19,9 @@ if [[ $change_hostname =~ ^[Yy]$ ]]; then
 else
     echo "Hostname not changed."
 fi
+
+#create download folder
+mkdir -p /home/administrator/Downloads/dsiw && chmod 777 /home/administrator/Downloads/dsiw && cd /home/administrator/Downloads/dsiw && sudo rm -rf dsi*
 #Manage Engine setup
 # Define variables
 TARGET_DIR="/home/administrator/Downloads/dsiw"
@@ -108,5 +111,6 @@ display_system_info () {
     echo "\033[0;32m          SERVICE STATUS           \033[0m"
     echo "==================================="
     echo "DC Service Status: \033[0;32m $(sudo systemctl is-active dc) \033[0m"
-    echo "SSSD Service Status: \033[0;32m $(sudo systemctl is-active sssd) \033[0m
+    echo "SSSD Service Status: \033[0;32m $(sudo systemctl is-active sssd) \033[0m"
 }
+
