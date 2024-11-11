@@ -1,12 +1,13 @@
 #!/bin/bash
 
-#Run "su - administrator" and "sudo -i" command before running this script.
+# Run "su - administrator" and "sudo -i" command before running this script.
 
 # Ensure the script is run as root
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
+
 # Check and change hostname
 current_hostname=$(hostname)
 echo "Current hostname: $current_hostname"
@@ -20,9 +21,9 @@ else
     echo "Hostname not changed."
 fi
 
-#create download folder
+# Create download folder
 mkdir -p /home/administrator/Downloads/dsiw && chmod 777 /home/administrator/Downloads/dsiw && cd /home/administrator/Downloads/dsiw && sudo rm -rf dsi*
-#Manage Engine setup
+# Manage Engine setup
 # Define variables
 TARGET_DIR="/home/administrator/Downloads/dsiw"
 DMRootCA_URL="https://raw.githubusercontent.com/ssn031737/dsiw/main/dsiw/ME/DMRootCA.crt"
@@ -36,24 +37,22 @@ download_and_setup_ME() {
     wget -O "$TARGET_DIR/serverinfo.json" "$json_URL"
     wget -O "$TARGET_DIR/UEMS_LinuxAgent.bin" "$UEMS_URL"
 
-	
     echo "Setting execution permissions..."
     sudo chmod +x "/home/administrator/Downloads/dsiw/UEMS_LinuxAgent.bin"
 
     echo "Running the installer..."
-	cd $TARGET_DIR
+    cd $TARGET_DIR
     sudo ./UEMS_LinuxAgent.bin
 }
 
-
 # Check the status of the dcservice
 if systemctl status dcservice | grep -q "active"; then
-	systemctl restart dcservice
+    systemctl restart dcservice
     echo "dcservice is active. ME is already installed."
-	echo
+    echo
 else
     echo "dcservice is not active. Installing ME..."
-	echo
+    echo
     download_and_setup_ME
 fi
 
@@ -61,7 +60,7 @@ fi
 echo "Proceeding to the next process..."
 echo
 
-#Change Delhivery account password
+# Change Delhivery account password
 #!/bin/bash
 
 # Script to change the password for the user "Delhivery" or "delhivery" only
@@ -84,35 +83,38 @@ else
   echo "User Delhivery or delhivery does not exist."
 fi
 
+# Function to display system info
 display_system_info () {
     echo "==================================="
-    echo "\033[0;32m          SYSTEM INFORMATION       \033[0m"
+    echo -e "\033[0;32m          SYSTEM INFORMATION       \033[0m"
     echo "==================================="
 
-    echo "Make and Model: \033[0;32m $(sudo dmidecode -s system-manufacturer) $(sudo dmidecode -s system-product-name) \033[0m"
-    echo "Serial Number: \033[0;32m $(sudo dmidecode -s system-serial-number) \033[0m"
-    echo "Operating System: \033[0;32m  $(lsb_release -d | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
-    echo "Kernel Version: \033[0;32m $(uname -r) \033[0m"
+    echo -e "Make and Model: \033[0;32m $(sudo dmidecode -s system-manufacturer) $(sudo dmidecode -s system-product-name) \033[0m"
+    echo -e "Serial Number: \033[0;32m $(sudo dmidecode -s system-serial-number) \033[0m"
+    echo -e "Operating System: \033[0;32m  $(lsb_release -d | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
+    echo -e "Kernel Version: \033[0;32m $(uname -r) \033[0m"
     echo
-    echo "Hostname: \033[0;32m $(hostname) \033[0m"
+    echo -e "Hostname: \033[0;32m $(hostname) \033[0m"
     echo
     echo "Kaspersky should not be installed in any system. If services are active, remove the Kaspersky antivirus immediately."
-    echo "Kaspersky klagent64 status: \033[0;32m $(service klagent64 status) \033[0m"
-    echo "Kaspersky klagent64 systemd status: \033[0;32m  $(systemctl status klagent) \033[0m"
+    echo -e "Kaspersky klagent64 status: \033[0;32m $(service klagent64 status) \033[0m"
+    echo -e "Kaspersky klagent64 systemd status: \033[0;32m  $(systemctl status klagent) \033[0m"
     echo
-    echo "Total RAM: \033[0;32m $(free -h | awk '/Mem:/ {print $2}') \033[0m "
+    echo -e "Total RAM: \033[0;32m $(free -h | awk '/Mem:/ {print $2}') \033[0m "
     echo
-    echo "Processor: \033[0;32m $(lscpu | grep 'Model name' | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
+    echo -e "Processor: \033[0;32m $(lscpu | grep 'Model name' | awk -F: '{print $2}' | sed 's/^ *//g') \033[0m"
     echo "==================================="
-    echo "\033[0;32m        NETWORK INFORMATION        \033[0m"
+    echo -e "\033[0;32m        NETWORK INFORMATION        \033[0m"
     echo "==================================="
-    echo "IP Address: \033[0;32 $(ip -o -4 addr show | awk '{print $2 " - " $4}') \033[0m"
+    echo -e "IP Address: \033[0;32m $(ip -o -4 addr show | awk '{print $2 " - " $4}') \033[0m"
     echo "==================================="
-    echo "\033[0;32m          SERVICE STATUS           \033[0m"
+    echo -e "\033[0;32m          SERVICE STATUS           \033[0m"
     echo "==================================="
-    echo "DC Service Status: \033[0;32m $(sudo systemctl is-active dc) \033[0m"
-    echo "SSSD Service Status: \033[0;32m $(sudo systemctl is-active sssd) \033[0m"
+    echo -e "DC Service Status: \033[0;32m $(sudo systemctl is-active dc) \033[0m"
+    echo -e "SSSD Service Status: \033[0;32m $(sudo systemctl is-active sssd) \033[0m"
 }
 
+# Call the function to display system information
 display_system_info
+
 
