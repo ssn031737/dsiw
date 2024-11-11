@@ -114,3 +114,5 @@ display_system_info () {
     echo "SSSD Service Status: \033[0;32m $(sudo systemctl is-active sssd) \033[0m"
 }
 
+display_system_info
+
